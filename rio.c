@@ -33,7 +33,7 @@ int rio_readline(rio_t *r, char *buf, int max_size){
 						if(-1 == r_v && errno == EINTR){
 								continue;
 						}
-						else
+						else if(-1 == r_v)
 								return -1;
 						if(0 == r_v)
 								break;
@@ -41,27 +41,23 @@ int rio_readline(rio_t *r, char *buf, int max_size){
 						ptr += r_v;
 						r->unread_size += r_v;
 				}
-				if( 0 == r->unread_size)
+				if(0 == r->unread_size)
 						return 0;
 		}
-		else{
-				int limit=0,count=0;
-				char *ptr = r->pcurrent;
- 				if(max_size > r->unread_size)
-						limit = r->unread_size;
-				else 
-						limit = max_size;
-				while(count < limit && *(ptr)!= '\n'){
-						*(buf+count) = *ptr;
-						++ptr;
-						++count;
-				}
-				if('\n' == *ptr && count < limit)
-						*(buf+count) = '\n';
-				r->pcurrent += count;
-				r->unread_size -= count;
-				return count;
-
+		int limit=0,count=0;
+		char *ptr = r->pcurrent;
+ 		if(max_size > r->unread_size)
+				limit = r->unread_size;
+		else 
+				limit = max_size;
+		while(count < limit && *(ptr)!= '\n'){
+				*(buf+count) = *ptr;
+				++ptr;
+				++count;
 		}
-
+		if('\n' == *ptr && count < limit)
+				*(buf+count) = '\n';
+		r->pcurrent += count;
+		r->unread_size -= count;
+		return count;
 }

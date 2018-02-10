@@ -1,3 +1,4 @@
+#include "server.h"
 void doit(int fd){
 		rio_t rbuffer;
 		char buf[MAXLINE], method[MAXLINE],uri[MAXLINE],version[MAXLINE],filename[MAXLINE],cgi[MAXLINE];
@@ -9,7 +10,7 @@ void doit(int fd){
 		sscanf(buf,"%s %s %s", method, uri, version);
 		if(strcmp("GET",method) != 0){
 				send_error(fd, "501","Not Implemented");// send what
-				return
+				return;
 		}
 		//send_error(fd,"200","ok");
 		is_static = parseuri(uri,filename,cgi);

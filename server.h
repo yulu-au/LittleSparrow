@@ -16,6 +16,8 @@
 //void doit(int);
 //void send_error(int,char*,char*);
 
+//int parseuri(char*, char*, char*);
+
 typedef struct {
 		int fd;
 		char buf[MAXLINE];
