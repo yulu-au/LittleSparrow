@@ -20,11 +20,20 @@ void doit(int fd){
 			return;
 		}
 
-
+		
 		if(is_static){// serve static content
+				if(!(S_ISREG(sbuf.st_mode))||!(S_IRUSER & sbuf.st_mode)){
+						send_error(fd, "403", "Forbidden");
+						return;
+				}
 				printf("we would serve static content filename: %s cgi: %s\n",filename,cgi);
 		}
 		else{// serve dynamic content
-				printf("we would serve dynamic content filename: %s cgi: %s\n",filename,cgi);
+				if(!(S_ISREG(sbuf.st_mode))||!(S_IXUSER & sbuf.st_mode)){
+						 send_error(fd, "403", "Forbidden"); 
+						 return;                 
+				}
+				//printf("we would serve dynamic content filename: %s cgi: %s\n",filename,cgi);
+				send_error(fd, "501", "Not Implemented");
 		}
 }
