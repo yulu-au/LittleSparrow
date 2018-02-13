@@ -8,8 +8,11 @@ int rio_write(int fd,char *buf,int len){
 				if(writed <= 0){
 						if(writed < 0 && errno == EINTR)
 								writed = 0;
-						else
+						else{
+								printf("%s\n",strerror(errno));
 								return -1;
+
+						}
 				}
 				nleft = nleft - writed;
 				ptr = ptr + writed;

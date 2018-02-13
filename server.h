@@ -11,6 +11,9 @@
 #include <sys/socket.h>
 #include <sys/wait.h>
 #include <arpa/inet.h>
+#include <sys/stat.h>
+#include <sys/mman.h>
+#include <fcntl.h>
 #define PORT 80
 #define MAXLINE 4096
 //void doit(int);

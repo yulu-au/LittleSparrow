@@ -1,3 +1,7 @@
+#include "server.h"
+
+void get_file_type(char*,char*);
+
 void serve_static(int fd, char *filename, int filesize){
 		char filetype[1024],buf[MAXLINE];
 		int file = 0;
@@ -9,19 +13,21 @@ void serve_static(int fd, char *filename, int filesize){
 		sprintf(buf,"%sServer: toy server \r\n",buf);
 		sprintf(buf,"%sContent-length: %d\r\n",buf,filesize);
 		sprintf(buf,"%sContent-type: %s\r\n\r\n",buf,filetype);
-		rio_write(fd, buf, strlen(buf));
+
+		int bufsize = strlen(buf);
+		rio_write(fd, buf, bufsize);
 		
 		file = open(filename, O_RDONLY, 0);
 		if(-1 == file){
 				perror("open");
 				return;
 		}
-		src = mmap(0, filesize, PORT_READ, MAP_PRIVATE, file, 0);
+		src = mmap(0, filesize, PROT_READ, MAP_PRIVATE, file, 0);
 		if(src == (void*)-1){
 				perror("mmap");
 				return;
 		}
-		close(fd);
+		close(file);
 		rio_write(fd, src, filesize);
 		munmap(src, filesize);
 }

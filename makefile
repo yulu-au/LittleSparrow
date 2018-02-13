@@ -1,5 +1,5 @@
-server: main.o doit.o error.o rio.o parseuri.o serveCount.o
-	gcc -o server main.o doit.o error.o rio.o parseuri.o serveCount.o
+server: main.o doit.o error.o rio.o parseuri.o serveContent.o
+	gcc -o server main.o doit.o error.o rio.o parseuri.o serveContent.o
 main.o: main.c server.h
 	gcc -c -g main.c
 doit.o: doit.c server.h
@@ -10,9 +10,9 @@ rio.o: rio.c server.h
 	gcc -c -g rio.c
 parseuri.o: parseuri.c server.h
 	gcc -c -g parseuri.c
-serveCount.o: serveCount.c server.h
-	gcc -c -g serveCount.c
+serveContent.o: serveContent.c server.h
+	gcc -c -g serveContent.c
 
 .PHONY: clean
 clean:
-	rm -f main.o doit.o error.o rio.o parseuri.o serveCount.o server
+	rm -f main.o doit.o error.o rio.o parseuri.o serveContent.o server
