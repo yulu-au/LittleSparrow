@@ -1,9 +1,13 @@
 #include "server.h"
+
+static int make_socket_noblocking(int);
+
 void doit(int fd){
 		rio_t rbuffer;
 		char buf[MAXLINE], method[MAXLINE],uri[MAXLINE],version[MAXLINE],filename[MAXLINE],cgi[MAXLINE];
 		int is_static=0;
 		struct stat sbuf;
+		make_socket_noblocking(fd);
 		// init the buffer of rio
 		rio_readinit(&rbuffer, fd);
 		//read a line from fd
@@ -37,4 +41,20 @@ void doit(int fd){
 				//printf("we would serve dynamic content filename: %s cgi: %s\n",filename,cgi);
 				send_error(fd, "501", "Not Implemented");
 		}
+}
+
+static make_socket_noblocking(int fd){
+		int flags,s;
+		flags=fcntl(fd,F_GETFL,0);
+		if(flags == -1){
+				perror("fcntl");
+				return -1;
+		}
+		flags |= O_NONBLOCK;
+		s = fcntl(fd,F_SETFL,flags);
+		if(s == -1){
+				perror("fcntl");
+				return -1;
+		}
+		return 0;
 }

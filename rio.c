@@ -36,6 +36,9 @@ int rio_readline(rio_t *r, char *buf, int max_size){
 						if(-1 == r_v && errno == EINTR){
 								continue;
 						}
+						else if(-1 == r_v && errno == EAGAIN){
+								break;
+						}
 						else if(-1 == r_v)
 								return -1;
 						if(0 == r_v)
