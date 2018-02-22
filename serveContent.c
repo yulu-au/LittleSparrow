@@ -1,4 +1,5 @@
 #include "server.h"
+#include "log.h"
 
 void get_file_type(char*,char*);
 
@@ -19,12 +20,12 @@ void serve_static(int fd, char *filename, int filesize){
 		
 		file = open(filename, O_RDONLY, 0);
 		if(-1 == file){
-				perror("open");
+				logerror("open",errno);
 				return;
 		}
 		src = mmap(0, filesize, PROT_READ, MAP_PRIVATE, file, 0);
 		if(src == (void*)-1){
-				perror("mmap");
+				logerror("mmap",errno);
 				return;
 		}
 		close(file);

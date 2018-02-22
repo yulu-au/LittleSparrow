@@ -15,12 +15,14 @@ void doit(int fd){
 		sscanf(buf,"%s %s %s", method, uri, version);
 		if(strcmp("GET",method) != 0){
 				send_error(fd, "501","Not Implemented");// send what
+				logerror("501",errno);
 				return;
 		}
 		is_static = parseuri(uri,filename,cgi);
 		
 		if(stat(filename, &sbuf) < 0){
 			send_error(fd, "404", "Not Found");
+			logerror("not found file",errno);
 			return;
 		}
 
@@ -28,8 +30,10 @@ void doit(int fd){
 		if(is_static){// serve static content
 				if(!(S_ISREG(sbuf.st_mode))||!(S_IRUSR & sbuf.st_mode)){
 						send_error(fd, "403", "Forbidden");
+						logerror("forbidden",errno);
 						return;
 				}
+				logerror("server_static",errno);
 				serve_static(fd, filename, sbuf.st_size);
 				printf("we would serve static content filename: %s cgi: %s\n",filename,cgi);
 		}

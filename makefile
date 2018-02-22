@@ -1,5 +1,5 @@
-server: main.o doit.o error.o rio.o parseuri.o serveContent.o
-	gcc -o ./bin/server main.o doit.o error.o rio.o parseuri.o serveContent.o
+server: main.o doit.o error.o rio.o parseuri.o serveContent.o log.o
+	gcc -o ./bin/server main.o doit.o error.o rio.o parseuri.o serveContent.o log.o
 	rm *.o
 main.o: main.c server.h
 	gcc -c -g main.c
@@ -13,6 +13,8 @@ parseuri.o: parseuri.c server.h
 	gcc -c -g parseuri.c
 serveContent.o: serveContent.c server.h
 	gcc -c -g serveContent.c
+log.o: log.c log.h
+	gcc -c -g log.c
 
 .PHONY: clean
 clean:

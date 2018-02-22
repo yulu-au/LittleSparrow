@@ -1,4 +1,5 @@
 #include "server.h"
+#include "log.h"
 
 int rio_write(int fd,char *buf,int len){
 		int nleft=len,writed=0;
@@ -9,7 +10,7 @@ int rio_write(int fd,char *buf,int len){
 						if(writed < 0 && errno == EINTR)
 								writed = 0;
 						else{
-								printf("%s\n",strerror(errno));
+								logerror("write",errno);
 								return -1;
 
 						}
