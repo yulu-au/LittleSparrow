@@ -1,4 +1,5 @@
 #include "server.h"
+#include <signal.h>
 int open_listenfd(int port){
 		int fd;
 		struct sockaddr_in my_addr;
@@ -25,6 +26,16 @@ int open_listenfd(int port){
 int main(){
 	int listenfd,connfd,clientlen;
 	struct sockaddr_in clientaddr;
+
+	struct sigaction sa;
+	memset(&sa,'\0',sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	if(sigaction(SIGPIPE,&sa,NULL)){
+			logerror("sig",errno);
+			return -1;
+	}
+
 	if((listenfd = open_listenfd(PORT)) == -1){
 			perror("open_listenfd");
 			exit(1);
