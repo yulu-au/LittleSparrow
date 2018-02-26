@@ -1,4 +1,7 @@
-#include "server.h"
+#include "util.h"
+#include "error.h"
+#include "rio.h"
+
 void send_error(int fd,char *er_num,char *msg){
 		char buf[MAXLINE],body[MAXLINE];
 		//send response headers

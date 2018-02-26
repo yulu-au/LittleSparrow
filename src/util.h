@@ -1,6 +1,7 @@
-#ifndef _SERVER_H_
+#ifndef _UTIL_H_
 
-#define _SERVER_H_
+#define _UTIL_H_
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -14,19 +15,12 @@
 #include <sys/stat.h>
 #include <sys/mman.h>
 #include <fcntl.h>
+#include <signal.h>
+#include <sys/epoll.h>
 #define PORT 80
 #define MAXLINE 4096
-//void doit(int);
-//void send_error(int,char*,char*);
+#define MAXEVENTS 1024
 
-//int parseuri(char*, char*, char*);
+void doit(int fd);
 
-typedef struct {
-		int fd;
-		char buf[MAXLINE];
-		char *pcurrent;
-		int unread_size;
-		int size;
-
-} rio_t;
 #endif

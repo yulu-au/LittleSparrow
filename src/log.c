@@ -1,3 +1,4 @@
+#include "util.h"
 #include "log.h"
 
 void logerror(char *buf, int e){

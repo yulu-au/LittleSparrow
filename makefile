@@ -1,21 +1,36 @@
-server: main.o doit.o error.o rio.o parseuri.o serveContent.o log.o
-	gcc -o ./bin/server main.o doit.o error.o rio.o parseuri.o serveContent.o log.o
-	rm *.o
-main.o: main.c server.h
-	gcc -c -g main.c
-doit.o: doit.c server.h
-	gcc -c -g doit.c
-error.o: error.c server.h
-	gcc -c -g error.c
-rio.o: rio.c server.h
-	gcc -c -g rio.c
-parseuri.o: parseuri.c server.h
-	gcc -c -g parseuri.c
-serveContent.o: serveContent.c server.h
-	gcc -c -g serveContent.c
-log.o: log.c log.h
-	gcc -c -g log.c
+CC = gcc
 
-.PHONY: clean
+SOURCES_DIR =./src
+INCLUDES_DIR =
+LIBS_DIR = 
+OBJS_DIR = ./obj
+BIN_DIR = ./bin
+
+
+#CFLAGS = -I$(INCLUDES_DIR) -c -Wall -std=c99
+
+CFLAGS = -c -Wall -std=gnu99
+
+#LDFLAGS = -lpthread -L$(LIBS_DIR)
+
+LDFLAGS = 
+
+SOURCES=$(wildcard $(SOURCES_DIR)/*.c)
+NOTDIR=$(notdir $(SOURCES))
+SUBST=$(patsubst %.c,%.o,$(NOTDIR))
+OBJS=$(addprefix $(OBJS_DIR)/,$(SUBST))
+
+BIN=$(BIN_DIR)/main
+all:$(BIN)
+
+$(BIN):$(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^
+
+$(OBJS_DIR)/%.o:$(SOURCES_DIR)/%.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+.PHONY: clean run
 clean:
-	rm -f ./bin/server
+	rm -f ./obj/*.o $(BIN)
+run:
+	$(BIN)

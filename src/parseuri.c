@@ -1,4 +1,6 @@
-#include "server.h"
+#include "util.h"
+#include "parseuri.h"
+
 int parseuri(char *uri, char *filename, char *cgiargs){
 	int is_static=1;
 	if(!strstr(uri,"cgi-bin")){/*static content*/

@@ -1,7 +1,8 @@
-#include "server.h"
+#include "util.h"
 #include "log.h"
+#include "rio.h"
 
-void get_file_type(char*,char*);
+static void get_file_type(char*,char*);
 
 void serve_static(int fd, char *filename, int filesize){
 		char filetype[1024],buf[MAXLINE];
@@ -38,7 +39,7 @@ void serve_dynamic(int fd, char *filename, char *cgi){
 
 }
 
-void get_file_type(char *filename, char *type){
+static void get_file_type(char *filename, char *type){
 		if(strstr(filename, ".html"))
 				strcpy(type, "text/html");
 		else if(strstr(filename, ".gif"))
